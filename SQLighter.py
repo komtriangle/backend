@@ -99,7 +99,7 @@ class SQLighter:
         result = []
         for i in range(len(category)):
             res = dict()
-            res["id"]=category[i][0])
+            res["id"]=category[i][0]
             res["name"] = category[i][1]
             result.append(res)
         return result
