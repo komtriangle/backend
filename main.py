@@ -7,8 +7,8 @@ import json
 app = FastAPI()
 
 origins = [
-    "http://194.58.122.45:6536/",
-    "https://194.58.122.45:6536/",
+    "http://194.58.122.45:6537/",
+    "https://194.58.122.45:6537/",
     "http://localhost",
     "http://localhost:8000",
 ]
