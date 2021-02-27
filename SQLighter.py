@@ -15,7 +15,7 @@ class SQLighter:
         :return: bool
         """
         result = self.cursor.execute(
-            f"SELECT * FROM user WHERE id = '{user_id}'").fetchall()
+            f"SELECT * FROM user WHERE user_token = '{user_id}'").fetchall()
         if (result):
             res = 1
         else:
@@ -37,7 +37,7 @@ class SQLighter:
         Добавляет прошресс юзера
         """
         self.cursor.execute(
-            f"INSERT INTO progress (user_id, date, completed) VALUES('{user_id}', '{date}', '{completed}')")
+            f"INSERT INTO progress (user_token, date, completed) VALUES('{user_id}', '{date}', '{completed}')")
         self.connection.commit()
 
     def send_sber_id(self, sber_id):
@@ -54,12 +54,12 @@ class SQLighter:
         Вставка в БД нового пользователя
         """
         self.cursor.execute(
-            f"INSERT INTO user (id, sber_id, name, age, gender, active) VALUES('{user_id}','{sber_id}', '{username}', '{age}', '{gender}', '{active}')")
+            f"INSERT INTO user (user_token, sber_id, name, age, gender, active) VALUES('{user_id}','{sber_id}', '{username}', '{age}', '{gender}', '{active}')")
         self.connection.commit()
 
     def get_users_by_sberid(self, sber_id):
         """
-        достает юзера по сберайди
+        достает юзеров по сберайди
         """
         users = self.cursor.execute(
             f"SELECT * FROM user WHERE sber_id = '{sber_id}'").fetchall()
@@ -67,11 +67,12 @@ class SQLighter:
         for i in range(len(users)):
             res = dict()
             res["id"] = users[i][0]
-            res["sber_id"] = users[i][1]
-            res["name"] = users[i][2]
-            res["age"] = users[i][3]
-            res["gender"] = users[i][4]
-            res["active"] = users[i][5]
+            res["user_token"] = users[i][1]
+            res["sber_id"] = users[i][2]
+            res["name"] = users[i][3]
+            res["age"] = users[i][4]
+            res["gender"] = users[i][5]
+            res["active"] = users[i][6]
             result.append(res)
 
         return result
@@ -90,12 +91,12 @@ class SQLighter:
             result.append(res)
         return result
 
-    def get_progres_by_user(self, user_id):
+    def get_progres_by_user(self, user_token):
         """
         Достает прогрес юзера
         """
         progres = self.cursor.execute(
-            f"SELECT * FROM progress WHERE user_id = '{user_id}'").fetchall()
+            f"SELECT * FROM progress WHERE user_token = '{user_token}'").fetchall()
         result = []
         for progres_day in progres:
             res = dict()
