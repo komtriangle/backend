@@ -8,9 +8,25 @@ class SQLighter:
         self.connection = sqlite3.connect(database)
         self.cursor = self.connection.cursor()
 
+    def proverka_by_user_id(self, user_id):
+        """
+        Проверяет есть ли пользователь с данным id
+        :param user_id:
+        :return: bool
+        """
+        result = self.cursor.execute(
+            f"SELECT * FROM user WHERE id = '{user_id}'").fetchall()
+        if (result):
+            res = 1
+        else:
+            res = 0
+        return res
+
     def send_category(self, category_name):
         """
-        добавляет категорию
+        Добавляет категорию
+        :param category_name:
+        :return:
         """
         self.cursor.execute(
             f"INSERT INTO training_category (name) VALUES('{category_name}')")
@@ -33,12 +49,12 @@ class SQLighter:
             f"INSERT INTO devise (sber_id) VALUES('{sber_id}')")
         self.connection.commit()
 
-    def send_user(self, sber_id, username, age, gender, active):
+    def send_user(self, user_id,  sber_id, username, age, gender, active):
         """
         Вставка в БД нового пользователя
         """
         self.cursor.execute(
-            f"INSERT INTO users (sber_id, name, age, gender, active) VALUES('{sber_id}', '{username}', '{age}', '{gender}', '{active}')")
+            f"INSERT INTO user (id, sber_id, name, age, gender, active) VALUES('{user_id}','{sber_id}', '{username}', '{age}', '{gender}', '{active}')")
         self.connection.commit()
 
     def get_users_by_sberid(self, sber_id):
@@ -46,7 +62,7 @@ class SQLighter:
         достает юзера по сберайди
         """
         users = self.cursor.execute(
-            f"SELECT * FROM users WHERE sber_id = '{sber_id}'").fetchall()
+            f"SELECT * FROM user WHERE sber_id = '{sber_id}'").fetchall()
         result = []
         for i in range(len(users)):
             res = dict()
