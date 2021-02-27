@@ -1,18 +1,9 @@
 from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware
 from scheme import *
 from SQLighter import *
 import json
 
 app = FastAPI()
-
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
 
 
 @app.post("/User/")
@@ -51,7 +42,7 @@ async def getUsersBySberId(sber_id: int):
     return user
 
 @app.get("/ProverkaUsersByUserId/")
-async def ProverkaUsersByUserId(user_id: int):
+async def ProverkaUsersByUserId(user_id: str):
     db_worker = SQLighter("maindatabase.db")
     ans = db_worker.proverka_by_user_id(user_id)
     db_worker.close()
@@ -86,7 +77,7 @@ async def getExircicesfromGroup(group_id: int):
     return Exircices
 
 @app.get("/ProgressByUser/")
-async def getProgressByUser(user_id: int):
+async def getProgressByUser(user_id: str):
     db_worker = SQLighter("maindatabase.db")
     progres = db_worker.get_progres_by_user(user_id)
     db_worker.close()
