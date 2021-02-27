@@ -111,6 +111,7 @@ class SQLighter:
         result = dict()
         for i in range(len(group)):
             res = dict()
+            res['id'] = group[i][0]
             res["name"] = group[i][1]
             result[str(group[i][0])] = res
         return result
