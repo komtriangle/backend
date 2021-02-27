@@ -66,11 +66,12 @@ class SQLighter:
         """
         category = self.cursor.execute(
             f"SELECT * FROM traning_category").fetchall()
-        result = dict()
+        result = []
         for i in range(len(category)):
             res = dict()
+            res["id"] = category[i][0]
             res["name"] = category[i][1]
-            result[str(category[i][0])] = res
+            result.append(res)
         return result
 
     def get_progres_by_user(self, user_id):
