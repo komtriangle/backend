@@ -109,12 +109,12 @@ class SQLighter:
         """
         group = self.cursor.execute(
             f"SELECT * FROM traning_group").fetchall()
-        result = dict()
+        result = []
         for i in range(len(group)):
             res = dict()
             res['id'] = group[i][0]
             res["name"] = group[i][1]
-            result[str(group[i][0])] = res
+            result.append(res)
         return result
 
     def get_exircices_from_group(self, group_id):
