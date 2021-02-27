@@ -13,7 +13,7 @@ class SQLighter:
         добавляет категорию
         """
         self.cursor.execute(
-            f"INSERT INTO traning_category (name) VALUES('{category_name}')")
+            f"INSERT INTO training_category (name) VALUES('{category_name}')")
         self.connection.commit()
 
     def send_progres(self, user_id, date, completed):
@@ -65,7 +65,7 @@ class SQLighter:
         Достает все категории
         """
         category = self.cursor.execute(
-            f"SELECT * FROM traning_category").fetchall()
+            f"SELECT * FROM training_category").fetchall()
         result = []
         for i in range(len(category)):
             res = dict()
@@ -95,7 +95,7 @@ class SQLighter:
         Достает категорию по айди
         """
         category = self.cursor.execute(
-            f"SELECT * FROM traning_category WHERE id = '{category_id}'").fetchall()
+            f"SELECT * FROM training_category WHERE id = '{category_id}'").fetchall()
         result = []
         for i in range(len(category)):
             res = dict()
@@ -109,12 +109,14 @@ class SQLighter:
         Достает все группы
         """
         group = self.cursor.execute(
-            f"SELECT * FROM traning_group").fetchall()
+            f"SELECT * FROM training_group").fetchall()
         result = []
         for i in range(len(group)):
             res = dict()
             res['id'] = group[i][0]
             res["name"] = group[i][1]
+            res["short_discription"] = group[i][2]
+            res["discription"] = group[i][3]
             result.append(res)
         return result
 
@@ -124,16 +126,16 @@ class SQLighter:
         """
 
         exircices_id = self.cursor.execute(
-            f"SELECT traning_id FROM traning_traning_group WHERE traning_group_id = '{group_id}'").fetchall()
+            f"SELECT training_id FROM training_training_group WHERE training_group_id = '{group_id}'").fetchall()
         result = []
         for exircices in exircices_id:
             ex_id = exircices[0]
             ex = self.cursor.execute(
-                f"SELECT * FROM traning WHERE id = '{ex_id}'").fetchall()
+                f"SELECT * FROM training WHERE id = '{ex_id}'").fetchall()
             res = dict()
             res["id"] = ex[0][0]
             res["category"] = self.cursor.execute(
-                f"SELECT name FROM traning_category WHERE id = '{ex[0][1]}'").fetchall()[0][0]
+                f"SELECT name FROM training_category WHERE id = '{ex[0][1]}'").fetchall()[0][0]
             res["name"] = ex[0][2]
             res["discription"] = ex[0][3]
             res["photo"] = ex[0][4]
