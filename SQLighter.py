@@ -47,7 +47,7 @@ class SQLighter:
         """
         users = self.cursor.execute(
             f"SELECT * FROM users WHERE sber_id = '{sber_id}'").fetchall()
-        result = dict()
+        result = []
         for i in range(len(users)):
             res = dict()
             res["id"] = users[i][0]
@@ -56,7 +56,7 @@ class SQLighter:
             res["age"] = users[i][3]
             res["gender"] = users[i][4]
             res["active"] = users[i][5]
-            result[str(users[i][0])] = res
+            result.append(res)
 
         return result
 
@@ -80,14 +80,14 @@ class SQLighter:
         """
         progres = self.cursor.execute(
             f"SELECT * FROM progress WHERE user_id = '{user_id}'").fetchall()
-        result = dict()
+        result = []
         for progres_day in progres:
             res = dict()
             res["id"] = progres_day[0]
             res["user_id"] = progres_day[1]
             res["date"] = progres_day[2]
             res["completed"] = progres_day[3]
-            result[str(progres_day[0])] = res
+            result.append(res)
         return result
 
     def get_category_by_id(self, category_id):
@@ -96,11 +96,12 @@ class SQLighter:
         """
         category = self.cursor.execute(
             f"SELECT * FROM traning_category WHERE id = '{category_id}'").fetchall()
-        result = dict()
+        result = []
         for i in range(len(category)):
             res = dict()
+            res["id"]=category[i][0])
             res["name"] = category[i][1]
-            result[str(category[i][0])] = res
+            result.append(res)
         return result
 
     def get_all_group(self):
@@ -124,7 +125,7 @@ class SQLighter:
 
         exircices_id = self.cursor.execute(
             f"SELECT traning_id FROM traning_traning_group WHERE traning_group_id = '{group_id}'").fetchall()
-        result = dict()
+        result = []
         for exircices in exircices_id:
             ex_id = exircices[0]
             ex = self.cursor.execute(
@@ -137,7 +138,7 @@ class SQLighter:
             res["discription"] = ex[0][3]
             res["photo"] = ex[0][4]
             res["time"] = ex[0][5]
-            result[str(ex[0][0])] = res
+            result.append(res)
         return result
 
     def get_sber_id(self, sber_id):
@@ -155,13 +156,13 @@ class SQLighter:
         """
         phras = self.cursor.execute(
             f"SELECT * FROM motivation WHERE id = '{id}'").fetchall()
-        result = dict()
+        result = []
         res = dict()
         res["id"] = phras[0][0]
         res["name"] = phras[0][1]
         res["discription"] = phras[0][2]
         res["author"] = phras[0][3]
-        result[str(phras[0][0])]  = res
+        result.append(res)
         return result
 
 
