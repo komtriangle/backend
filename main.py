@@ -6,12 +6,6 @@ import json
 
 app = FastAPI()
 
-origins = [
-    "http://194.58.122.45:6537/",
-    "https://194.58.122.45:6537/",
-    "http://localhost",
-    "http://localhost:3000",
-]
 
 app.add_middleware(
     CORSMiddleware,
