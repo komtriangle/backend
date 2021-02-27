@@ -1,5 +1,4 @@
 from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware
 from scheme import *
 from SQLighter import *
 import json
@@ -7,20 +6,10 @@ import json
 app = FastAPI()
 
 
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
-
-
-
 @app.post("/User/")
 async def createUser(user: User):
     db_worker = SQLighter("maindatabase.db")
-    db_worker.send_user(user.SberId, user.Name, user.Age, user.Gender, user.Active)
+    db_worker.send_user(user.UserId, user.SberId, user.Name, user.Age, user.Gender, user.Active)
     db_worker.close()
     return user
 
@@ -29,7 +18,6 @@ async def createSberId(sber_id: int):
     db_worker = SQLighter("maindatabase.db")
     db_worker.send_sber_id(sber_id)
     db_worker.close()
-    #uvicorn main:app --port 6536 --host 194.58.122.45
     return sber_id
 
 @app.post('/CategoryExercises/')
@@ -52,6 +40,13 @@ async def getUsersBySberId(sber_id: int):
     user = db_worker.get_users_by_sberid(sber_id)
     db_worker.close()
     return user
+
+@app.get("/ProverkaUsersByUserId/")
+async def ProverkaUsersByUserId(user_id: int):
+    db_worker = SQLighter("maindatabase.db")
+    ans = db_worker.proverka_by_user_id(user_id)
+    db_worker.close()
+    return ans
 
 @app.get("/AllCategoriesExirc/")
 async def getAllCategoriesExirc():
