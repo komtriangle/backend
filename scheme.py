@@ -1,7 +1,7 @@
 from pydantic import BaseModel
 
 class User(BaseModel):
-    UserId: int
+    UserId: str
     SberId: int
     Name: str
     Age: int
@@ -9,7 +9,7 @@ class User(BaseModel):
     Active: int
 
 class Progres(BaseModel):
-    UserId: int
+    UserId: str
     Date: str
     Completed: bool
 
