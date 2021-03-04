@@ -99,3 +99,11 @@ async def getMotivationalPhrase(motivation_id: int):
     Phras = db_worker.get_motivations_id(motivation_id)
     db_worker.close()
     return Phras
+
+@app.get("/AchiviesFomUser/")
+async def getAchiviesForUser(user_id:str):
+    db_worker = SQLighter("maindatabase.db")
+    Achievements = db_worker.get_achievement_user(user_id)
+    db_worker.close()
+    return Achievements
+
