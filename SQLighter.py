@@ -183,6 +183,27 @@ class SQLighter:
         res["author"] = phras[0][3]
         result.append(res)
         return result
+    def get_achievement_user(self, user_id):
+        count=1
+        days=0
+        while(count!=0):
+            count=self.cursor.execute(
+            f"select Count(*) from (select date(date) as curr_date, Count(*) from progress  where user_token = '{user_id}' group by  date(date)) where curr_date=date(date('now',\"-{days} day\"))").fetchall()
+            if(count[0][0]>0):
+                days+=1
+            count=count[0][0]
+        
+
+        count_train = self.cursor.execute(
+            f"select Count(*) from progress where user_token = '{user_id}'").fetchall()
+        
+        count_days_train = self.cursor.execute(
+            f"select count(*) from (select * from progress where user_token='{user_id}' group by date(date))").fetchall()
+        res =dict()
+        res['dict']=days
+        res['count_train']=count_train[0][0]
+        res['count_days_train']=count_days_train[0][0]
+        return res
 
 
     def close(self):
