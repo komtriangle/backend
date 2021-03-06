@@ -20,7 +20,10 @@ class SQLighter:
             res = 1
         else:
             res = 0
-        return res
+            self.cursor.execute(
+            f"INSERT INTO user (user_token) VALUES('{user_id}')")
+            self.connection.commit()
+        return 1
 
     def send_category(self, category_name):
         """
@@ -53,9 +56,12 @@ class SQLighter:
         """
         Вставка в БД нового пользователя
         """
-        self.cursor.execute(
+        count = self.cursor.execute(
+            f"SELECT Count(*) FROM user WHERE user_token = '{user_id}'").fetchall()
+        if (count == 0):
+            self.cursor.execute(
             f"INSERT INTO user (user_token, sber_id, name, age, gender, active) VALUES('{user_id}','{sber_id}', '{username}', '{age}', '{gender}', '{active}')")
-        self.connection.commit()
+            self.connection.commit()
 
     def get_users_by_sberid(self, sber_id):
         """
@@ -183,6 +189,28 @@ class SQLighter:
         res["author"] = phras[0][3]
         result.append(res)
         return result
+    def get_achievement_user(self, user_id):
+        count=1
+        days=0
+        while(count!=0):
+            count=self.cursor.execute(
+            f"select Count(*) from (select date(date) as curr_date, Count(*) from progress  where user_token = '{user_id}' group by  date(date)) where curr_date=date(date('now',\"-{days} day\"))").fetchall()
+            if(count[0][0]>0):
+                days+=1
+            count=count[0][0]
+        
+
+        count_train = self.cursor.execute(
+            f"select Count(*) from progress where user_token = '{user_id}'").fetchall()
+        
+        count_days_train = self.cursor.execute(
+            f"select count(*) from (select * from progress where user_token='{user_id}' group by date(date))").fetchall()
+        res =dict()
+        res['dict']=days
+        res['count_train']=count_train[0][0]
+        res['count_days_train']=count_days_train[0][0]
+        return res
+
 
 
     def close(self):
